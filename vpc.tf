@@ -84,15 +84,3 @@ module "vpc" {
   ]
 }
 
-resource "aws_route_table" "private" {
-  # Use o mesmo mapa que seu módulo "vpc" usa,
-  # ou simplesmente module.vpc se ele já for um map
-  for_each = module.vpc
-
-  vpc_id = each.value.vpc_id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = module.vpc[each.key].nat_gateway_ids[0]
-  }
-}
