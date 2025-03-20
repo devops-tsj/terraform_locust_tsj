@@ -83,3 +83,19 @@ module "vpc" {
     module.subnet_addrs_public
   ]
 }
+
+resource "aws_route_table" "private" {
+
+  vpc_id = module.vpc[each.key].vpc_id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = module.vpc[each.key].nat_gateway_ids[0]
+}
+
+}
+
+resource "aws_route_table_association" "private" {
+    subnet_id = module.vpc[each.key].private_subnets[0]
+    route_table_id = aws_route_table.private.id
+}
