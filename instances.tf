@@ -47,14 +47,14 @@ module "instance" {
   ]
 }
 
-# resource "aws_eip" "instance" {
-#   instance = module.instance[each.key].id
-#   for_each = var.instance
-#   domain   = "vpc"
-#   tags = {
-#     "Name" = "${var.prefix_name}-${each.value.name}-${var.env}"
-#   }
-# }
+resource "aws_eip" "instance" {
+   instance = module.instance[each.key].id
+   for_each = var.instance
+   domain   = "vpc"
+   tags = {
+     "Name" = "${var.prefix_name}-${each.value.name}-${var.env}"
+   }
+ }
 
 # resource "aws_s3_bucket" "instance" {
 #   for_each = var.instance
