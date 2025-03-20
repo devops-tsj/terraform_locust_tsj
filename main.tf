@@ -1,9 +1,6 @@
 provider "aws" {
   region = var.region
-
-  assume_role {
-    role_arn = var.switch_role_arn
-  }
+  role = "arn:aws:iam::970863514724:role/service-role/codebuild-locust_tsj_apply-service-role"
 }
 
 ## Data
