@@ -93,6 +93,6 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = each.value.nat_gateway_ids[0]
+    nat_gateway_id = module.vpc[each.key].nat_gateway_ids[0]
   }
 }
