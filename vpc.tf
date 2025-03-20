@@ -85,17 +85,14 @@ module "vpc" {
 }
 
 resource "aws_route_table" "private" {
+  # Use o mesmo mapa que seu módulo "vpc" usa,
+  # ou simplesmente module.vpc se ele já for um map
+  for_each = module.vpc
 
-  vpc_id = module.vpc[each.key].vpc_id
+  vpc_id = each.value.vpc_id
 
   route {
-    cidr_block = "0.0.0.0/0"
-    nat_gateway_id = module.vpc[each.key].nat_gateway_ids[0]
-}
-
-}
-
-resource "aws_route_table_association" "private" {
-    subnet_id = module.vpc[each.key].private_subnets[0]
-    route_table_id = aws_route_table.private.id
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = each.value.nat_gateway_ids[0]
+  }
 }
