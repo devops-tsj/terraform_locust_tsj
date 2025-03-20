@@ -24,7 +24,9 @@ phases:
     commands:
       - "cd ${CODEBUILD_SRC_DIR}/${CODE_SRC_DIR}"
       - "echo ## TERRAFORM PLAN : Generate the Terraform Plan"
+      - "terraform init"
       - "terraform plan -out tfapply"
+
 artifacts:
   files:
     - '**/*'
