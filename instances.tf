@@ -34,7 +34,7 @@ module "instance" {
   subnet_id              = lookup(each.value, "subnet_id", element(module.vpc[each.value.vpc_key].public_subnets, 0))
   vpc_security_group_ids = [module.security_group_instance[each.key].security_group_id]
   key_name               = module.keypair[each.value.keypair_key].key_pair_name
-
+  associate_public_ip_address = true
   private_ip = lookup(each.value, "ip_address", null)
 
 
@@ -46,20 +46,6 @@ module "instance" {
     },
   ]
 }
-
-resource "aws_eip" "instance" {
-   instance = module.instance[each.key].id
-   for_each = var.instance
-   domain   = "vpc"
-   tags = {
-     "Name" = "${var.prefix_name}-${each.value.name}-${var.env}"
-   }
- }
-
-# resource "aws_s3_bucket" "instance" {
-#   for_each = var.instance
-#   bucket   = "${var.prefix_name}-${each.value.name}-${var.env}"
-# }
 
 data "aws_iam_policy_document" "instance" {
   for_each = var.instance
